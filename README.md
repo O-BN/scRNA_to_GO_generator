@@ -36,7 +36,6 @@ extraction of significant genes from single-cell RNA sequencing (scRNA) data, an
 - **Gene Ontology Results**:
   - save the results in "Differentiated_Gene_<input_file_name>.xlsx"
 
-<format>”.
 - **Summary Report**:
   - Generates a summary report in PDF/HTML format with key findings and visualizations.
 
@@ -50,11 +49,10 @@ extraction of significant genes from single-cell RNA sequencing (scRNA) data, an
 ---
 
 #### Technologies and Libraries
-- **Excel File Handling**: pandas, openpyxl.
-- **Gene Ontology API Integration**: requests.
-- **Visualization**: matplotlib, Plotly, networkx.
-- **User Interface**: Tkinter for GUI.
+- **Excel File Handling**: <pandas>, <openpyxl>.
+- **Gene Ontology API Integration**: <requests>.
+- **Visualization**: <matplotlib>, <Plotly>, <networkx>.
+- **User Interface**: <Tkinter> for GUI.
 - **Performance**: threading or asyncio for parallel API requests.
-- **Documentation and Testing**: pytest for tests; Jupyter notebooks for tutorials.
 
 ---
