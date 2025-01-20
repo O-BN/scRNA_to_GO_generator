@@ -1,58 +1,77 @@
 ### Automated Gene Ontology Analysis Tool for scRNA Data
 
 #### Objective
-Develop a Python program that automates the analysis of single-cell RNA sequencing (scRNA-seq) clusters for their gene ontology (GO)
-extraction of significant genes from single-cell RNA sequencing (scRNA) data, analyzes the clusters gene ontology (GO) classifications using the Gene Ontology API, and visualizes the results. This tool is designed for researchers seeking an efficient way to process scRNA results and interpret gene functions.
+The goal of this project is to develop a Python-based tool that automates the analysis of single-cell RNA sequencing (scRNA-seq) clusters for their gene ontology (GO) classifications. This tool enables researchers to extract significant genes from scRNA-seq data, analyze their biological functions using the Gene Ontology framework, and visualize the results. By simplifying this process, the tool offers an efficient way to interpret gene functions within cellular clusters.
 
 ---
 
 #### Features and Workflow
 
-##### 1. Input Processing:
-- Reads an Excel file containing scRNA results input by the user <input_file_name>.
-- Supports dynamic filtering and sorting based on any column title specified by the user. If no column title is specified, it defaults to cluster name="cluster", thresholds="avg_log2FC", gene_name="gene".
-- Extracts:
-  - Cluster name.
-  - Significantly differentiated gene names. based on user-defined or default thresholds (avg_log2FC < 1.5).
+##### 1. **Input Processing:**
+- The tool begins by reading an Excel file containing scRNA-seq results. 
+- Users can specify:
+  - The column that identifies clusters (default: `"cluster"`).
+  - The column containing gene names (default: `"gene"`).
+  - A column for a numeric threshold (default: `"avg_log2FC"`), used to filter significant genes.
+  - A threshold value (default: `1.5`) to identify genes of interest.
+- The tool dynamically filters and organizes the data, extracting genes associated with each cluster.
 
-##### 2. Gene List Extraction:
-- For each cluster, store significant differentiation gane names in a dictionary where:
-  - The keys are the clusters.
-  - The values are a list of the gane names 
-- Analyzes each dictionary (cluster) separately for its gene ontology.
+##### 2. **Gene List Extraction:**
+- For each cluster, the program compiles a list of significantly differentiated genes that meet the user's threshold criteria.
+- The output is organized into a dictionary:
+  - **Keys**: Cluster identifiers.
+  - **Values**: Lists of significant genes for each cluster.
+- This data is stored in an Excel file for further use.
 
-##### 3. Gene Ontology Analysis:
-- Uses the Gene Ontology API to analyze the cluster (key) biological process using its gene list (values). default specie="Mus Muscukus".
+##### 3. **Gene Ontology Analysis:**
+- Using the Gene Ontology tools (`goatools`), the tool maps the significant genes to their corresponding Gene Ontology terms.
+- It focuses on three GO namespaces:
+  - **Biological Process (BP)**
+  - **Cellular Component (CC)**
+  - **Molecular Function (MF)**
+- The tool identifies significant GO terms based on adjusted p-values (`p_fdr_bh`) and selects the top 10 terms for each cluster.
 
-##### 4. Visualization:
-- **Static Visualizations**:
-  - Generates a vartical bar chart summarizing the top GO terms for each sample (up to 10). the color of the bar will change according to the significante level of the biological process within the cluster.
-  - save the charts as <cluster_name>.png
+##### 4. **Visualization:**
+- **Bar Charts**:
+  - A vertical bar chart is generated for each cluster, showing the top GO terms ranked by the number of genes associated with each term.
+  - The bars are color-coded based on the significance of the terms, using a continuous color gradient.
+- **Label Management**:
+  - Term labels are wrapped to avoid overlapping, ensuring readability.
+  - The visualization includes a color bar that dynamically scales with the range of significance values.
+- Each chart is saved as a PNG file with a filename that includes the cluster identifier.
 
-##### 5. Output:
-- **Gene List Saving**:
-  - Saves the dictionary in Excel file, named “Differentiated_Gene_<input_file_name>.xlsx”.
-
-- **Gene Ontology Results**:
-  - save the results in "Differentiated_Gene_<input_file_name>.xlsx"
-
+##### 5. **Output:**
+- **Excel File**:
+  - Saves the filtered gene lists for each cluster in a single Excel file named `Differentiated_Genes.xlsx`.
+- **GO Analysis Results**:
+  - Includes details such as GO terms, p-values, adjusted p-values, and associated genes.
 - **Summary Report**:
-  - Generates a summary report in PDF/HTML format with key findings and visualizations.
+  - Generates a PDF report summarizing:
+    - The number of significant genes per cluster.
+    - The top GO terms for each cluster, along with visualizations.
 
-##### 6. Performance Optimization:
-- Implements multi-threading or asynchronous requests for GO API calls to handle large datasets efficiently.
-- Provides an option to cache API responses to avoid repeated queries for the same genes.
+##### 6. **Graphical User Interface (GUI):**
+- A simple GUI is implemented using **Tkinter**, allowing users to:
+  - Select the input file.
+  - Specify column names and threshold values.
+  - Execute the analysis with minimal effort.
+- The GUI ensures accessibility for users with limited programming experience.
 
-##### 7. User Interface:
-- Includes a simple GUI using Tkinter for non-programmers. use colorful theme
+---
+
+#### Note
+Before using the main script, **`RNAtoGO.py`**, to analyze RNA results, users must first execute the setup script, **`setup_GO_terms_locally.py`**. This setup script ensures that all necessary Gene Ontology data is downloaded and configured locally, enabling the tool to perform efficient and accurate analysis. Follow the instructions provided in **`setup_GO_terms_locally.py`** carefully to avoid errors during execution.
 
 ---
 
 #### Technologies and Libraries
-- **Excel File Handling**: <pandas>, <openpyxl>.
-- **Gene Ontology API Integration**: <requests>.
-- **Visualization**: <matplotlib>, <Plotly>, <networkx>.
-- **User Interface**: <Tkinter> for GUI.
-- **Performance**: threading or asyncio for parallel API requests.
+- **Data Handling**: `pandas`, `openpyxl`.
+- **Gene Ontology Analysis**: `goatools`.
+- **Visualization**: `matplotlib`, `seaborn`.
+- **User Interface**: `Tkinter`.
+- **Additional Libraries**: `os`, `textwrap`, `tkinter.messagebox`.
 
 ---
+
+#### Summary
+This project represents a robust pipeline for analyzing scRNA-seq data. It automates the identification of significant genes, maps them to their biological functions, and generates insightful visualizations. Designed with user-friendliness in mind, the tool allows researchers to streamline their analysis process, providing clarity and focus in the study of gene ontology.

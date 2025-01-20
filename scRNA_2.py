@@ -53,10 +53,6 @@ def visualize_go_results(cluster, go_results, output_dir):
     plt.title(f"Top GO Terms for Cluster {cluster}")
     plt.tight_layout()
 
-    output_path = os.path.join(output_dir, f"{cluster}_go_terms.png")
-    plt.savefig(output_path)
-    plt.close()
-
 def save_gene_dict(gene_dict, output_file):
     writer = pd.ExcelWriter(output_file, engine='openpyxl')
     for cluster, genes in gene_dict.items():
